@@ -1,19 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: doom
+  labels:
+    app: doom
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: myapp
-  replicas: 2
+      app: doom
   template:
     metadata:
       labels:
-        app: myapp
+        app: doom
     spec:
       containers:
-      - name: myapp
-        image: nanajanashia/argocd-app:1.1
-        ports:
-        - containerPort: 8080
+        - name: doom
+          image: b0nam/docker-doom
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PASSWORD
+              value: "doom"  # You can set a custom VNC password here
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
